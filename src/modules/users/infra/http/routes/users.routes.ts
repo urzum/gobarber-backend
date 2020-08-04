@@ -6,7 +6,7 @@ import UsersController from '@modules/users/infra/http/controllers/UsersControll
 
 import UserAvatarController from '@modules/users/infra/http/controllers/UserAvatarController';
 
-import ensureAuthenticated from '../middlewares/ensureAuthenticated';
+import ensureAuthenticated from '@modules/users/infra/http/middlewares/ensureAuthenticated';
 
 const usersRouter = Router();
 const usersController = new UsersController();

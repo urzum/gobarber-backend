@@ -3,7 +3,7 @@ import { getRepository, Repository } from 'typeorm';
 import IUsersRepository from '@modules/users/repositories/IUsersRepository';
 import ICreatUserDTO from '@modules/users/dtos/ICreateUserDTO';
 
-import User from '../entities/User';
+import User from '@modules/users/infra/typeorm/entities/User';
 
 class UsersRepository implements IUsersRepository {
   private ormRepository: Repository<User>;
@@ -22,6 +22,8 @@ class UsersRepository implements IUsersRepository {
     const user = await this.ormRepository.findOne({
       where: { email },
     });
+
+    console.log('findByEmail', user, email);
 
     return user;
   }
