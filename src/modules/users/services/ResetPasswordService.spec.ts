@@ -3,20 +3,20 @@ import AppError from '@shared/errors/AppError';
 import FakeUsersRepository from '@modules/users/repositories/fakes/FakeUsersRepository';
 import FakeUserTokensRepository from '@modules/users/repositories/fakes/FakeUserTokensRepository';
 import FakeHashProvider from '@modules/users/providers/HashProvider/fakes/FakeBCryptHashProvider';
-import ResetPassword from '@modules/users/services/ResetPasswordService';
+import ResetPasswordService from '@modules/users/services/ResetPasswordService';
 
 let fakeUsersRepository: FakeUsersRepository;
 let fakeUserTokensRepository: FakeUserTokensRepository;
 let fakeHashProvider: FakeHashProvider;
-let resetPassword: ResetPassword;
+let resetPassword: ResetPasswordService;
 
-describe('SendForgotPasswordEmail', () => {
+describe('ResetPasswordService', () => {
   beforeEach(() => {
     fakeUsersRepository = new FakeUsersRepository();
     fakeUserTokensRepository = new FakeUserTokensRepository();
     fakeHashProvider = new FakeHashProvider();
 
-    resetPassword = new ResetPassword(
+    resetPassword = new ResetPasswordService(
       fakeUsersRepository,
       fakeUserTokensRepository,
       fakeHashProvider,
@@ -57,7 +57,7 @@ describe('SendForgotPasswordEmail', () => {
   });
 
   // não deve ser capaz de redefinir a senha com usuário inexistente
-  it('should not be able to reset password if passed more than 2 hours', async () => {
+  it('should not be able to reset the password with non-existing user', async () => {
     const { token } = await fakeUserTokensRepository.generate(
       'non-existing-user',
     );
@@ -70,7 +70,8 @@ describe('SendForgotPasswordEmail', () => {
     ).rejects.toBeInstanceOf(AppError);
   });
 
-  it('should be able to reset the password', async () => {
+  // não deve ser capaz de redefinir a senha se passou mais de 2 horas
+  it('should not be able to reset password if passed more than 2 hours', async () => {
     const user = await fakeUsersRepository.create({
       name: 'John Doe',
       email: 'johndoe@example.com',

@@ -23,8 +23,6 @@ class UsersRepository implements IUsersRepository {
       where: { email },
     });
 
-    console.log('findByEmail', user, email);
-
     return user;
   }
 
